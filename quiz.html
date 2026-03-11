@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Épreuve 2 - Puzzle Backstage</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/quiz.css">
+  <link rel="icon" type="image/jpeg" href="img/favicon.jpeg">
+  <audio id="bg-music" loop><source src="audio/quizz_ost.mp3" type="audio/mpeg"></audio>
+</head>
+<body>
+  <div class="page-loader" id="page-loader">
+    <div class="loader-content"><div class="loader-logo"><div class="loader-symbols">
+      <span class="loader-symbol circle"></span><span class="loader-symbol triangle"></span><span class="loader-symbol square"></span>
+    </div></div>
+    <div class="loader-text">ÉPREUVE 2 — PUZZLE BACKSTAGE</div>
+    <div class="loader-bar"><div class="loader-progress"></div></div>
+    <div class="loader-status">Les pièces se mélangent...</div></div>
+  </div>
+  <header class="header">
+    <a href="index.html" class="back-btn" id="back-btn">← Retour</a>
+    <div class="header-center"><span class="page-badge">ÉPREUVE 2</span></div>
+    <div class="header-right"></div>
+  </header>
+  <main class="game-page">
+    <div class="game-container game-container-wide">
+      <div class="game-header">
+        <div class="game-icon-large">🧩</div>
+        <h1 class="pink">PUZZLE BACKSTAGE</h1>
+        <p>Reconstitue la grille en glissant les pièces — résous le puzzle pour débloquer le coffre !</p>
+      </div>
+      <div class="game-content">
+        <div class="locked-container hidden" id="locked">
+          <div class="locked-box"><span class="lock-icon">🔒</span><h3>Épreuve verrouillée</h3><p>Termine d'abord l'épreuve 1.</p><a href="enigme1.html" class="btn-primary">ALLER À L'ÉPREUVE 1</a></div>
+        </div>
+        <div id="game-area" class="pz-game">
+          <div class="pz-score-bar">
+            <span class="pz-round" id="pz-round">🧩 Puzzle</span>
+            <span class="pz-moves" id="pz-moves">🔄 0 coups</span>
+            <span class="pz-status" id="pz-status">⏳ En cours</span>
+          </div>
+          <div class="pz-instruction">
+            <span class="pz-instruction-text">👆 Clique sur une pièce <em>adjacente au trou</em> pour la glisser. Reconstitue l'image modèle !</span>
+          </div>
+          <div class="pz-target" id="pz-target">
+            <div class="pz-target-label">🎯 MODÈLE À RECONSTITUER</div>
+            <div class="pz-target-grid" id="pz-target-grid"></div>
+          </div>
+          <div class="pz-grid" id="pz-grid"></div>
+          <p class="pz-hint">Glisse les pièces vers le trou — le moins de coups possible !</p>
+          <div style="text-align:center;margin-top:0.8rem;">
+            <button id="btn-skip-puzzle" style="background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.4);color:#ff6644;padding:0.5rem 1.2rem;border-radius:10px;cursor:pointer;font-size:0.82rem;font-weight:600;">⏭ Passer ce puzzle (échec)</button>
+          </div>
+        </div>
+        <div class="result-container-full hidden" id="result">
+          <div class="result-box" id="result-box">
+            <div class="result-icon" id="result-icon"></div>
+            <h3 id="result-title"></h3><p id="result-text"></p>
+            <p class="result-score" id="result-score"></p>
+            <a href="enigme.html" class="btn-primary">CONTINUER →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="js/loader.js"></script><script src="js/gameState.js"></script><script src="js/globalTimer.js"></script><script src="js/quiz.js"></script><script src="js/music.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>

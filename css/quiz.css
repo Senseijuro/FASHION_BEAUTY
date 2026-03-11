@@ -1,0 +1,49 @@
+/* =================================================================
+   ÉPREUVE 2 — PUZZLE BACKSTAGE
+   ================================================================= */
+.pz-game { padding: 1rem 0; }
+.pz-score-bar { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem; }
+.pz-round { color: var(--cyan); font-weight: 600; }
+.pz-moves { color: var(--gold); font-weight: 600; }
+.pz-status { color: var(--green); font-weight: 600; }
+
+.pz-instruction { text-align: center; padding: 0.8rem 1rem; margin-bottom: 1rem; background: rgba(255,0,127,0.05); border: 1px solid rgba(255,0,127,0.2); border-radius: 12px; }
+.pz-instruction-text { font-size: 0.85rem; color: var(--gray-light); }
+.pz-instruction em { color: var(--pink); font-style: normal; font-weight: 700; }
+
+.pz-target { text-align: center; margin-bottom: 1rem; }
+.pz-target-label { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.pz-target-grid {
+  display: inline-grid; grid-template-columns: repeat(3, 40px); gap: 2px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 4px;
+}
+.pz-target-cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+
+.pz-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+  max-width: 300px; margin: 0 auto 1.5rem;
+}
+.pz-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem; border-radius: 14px; cursor: pointer;
+  background: var(--bg-card); border: 2px solid var(--border);
+  transition: all 0.15s; user-select: none;
+}
+.pz-cell:hover { border-color: var(--pink); transform: scale(1.05); }
+.pz-cell:active { transform: scale(0.95); }
+.pz-cell.empty { background: rgba(0,0,0,0.4); border: 2px dashed rgba(255,255,255,0.1); cursor: default; }
+.pz-cell.empty:hover { border-color: rgba(255,255,255,0.1); transform: none; }
+.pz-cell.correct { border-color: var(--green); background: rgba(0,255,136,0.08); }
+.pz-cell.solved { pointer-events: none; border-color: var(--green); background: rgba(0,255,136,0.15); animation: pz-pop 0.4s ease; }
+@keyframes pz-pop { 0%{transform:scale(1)} 50%{transform:scale(1.1)} 100%{transform:scale(1)} }
+
+.pz-hint { text-align: center; color: var(--gray); font-size: 0.8rem; }
+@media(max-width:400px) { .pz-grid { max-width: 250px; gap: 0.4rem; } .pz-cell { font-size: 2rem; } }
+
+/* =================================================================
+   BOOSTER D'ACCESSIBILITÉ (Puzzle)
+   ================================================================= */
+.pz-score-bar { font-size: 1.1rem !important; }
+.pz-instruction-text { font-size: 1.05rem !important; }
+.pz-target-label { font-size: 0.9rem !important; }
+.pz-hint { font-size: 1rem !important; }

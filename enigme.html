@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Épreuve 3 - Mot Manquant</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/enigme.css">
+  <link rel="icon" type="image/jpeg" href="img/favicon.jpeg">
+  <audio id="bg-music" loop><source src="audio/enigme2_ost.mp3" type="audio/mpeg"></audio>
+</head>
+<body>
+  <div class="page-loader" id="page-loader">
+    <div class="loader-content"><div class="loader-logo"><div class="loader-symbols">
+      <span class="loader-symbol circle"></span><span class="loader-symbol triangle"></span><span class="loader-symbol square"></span>
+    </div></div>
+    <div class="loader-text">ÉPREUVE 3 — MOT MANQUANT</div>
+    <div class="loader-bar"><div class="loader-progress"></div></div>
+    <div class="loader-status">Miranda rédige les fiches métiers...</div></div>
+  </div>
+  <header class="header">
+    <a href="index.html" class="back-btn" id="back-btn">← Retour</a>
+    <div class="header-center"><span class="page-badge">ÉPREUVE 3</span></div>
+    <div class="header-right"></div>
+  </header>
+  <main class="game-page">
+    <div class="game-container game-container-wide">
+      <div class="game-header">
+        <div class="game-icon-large">✏️</div>
+        <h1 class="purple">MOT MANQUANT</h1>
+        <p>Complète chaque phrase sur les métiers de l'esthétique et de la fleuristerie !</p>
+      </div>
+      <div class="game-content">
+        <div class="locked-container hidden" id="locked">
+          <div class="locked-box"><span class="lock-icon">🔒</span><h3>Épreuve verrouillée</h3><p>Termine d'abord l'épreuve 2.</p><a href="quiz.html" class="btn-primary">ALLER À L'ÉPREUVE 2</a></div>
+        </div>
+        <div id="game-area" class="mm-game">
+          <div class="mm-score-bar">
+            <span class="mm-round" id="mm-round">✏️ 1 / 5</span>
+            <span class="mm-correct" id="mm-correct">✅ 0</span>
+            <span class="mm-wrong" id="mm-wrong">❌ 0</span>
+          </div>
+          <div class="mm-phrase-card" id="mm-card">
+            <span class="mm-phrase" id="mm-phrase">Chargement...</span>
+          </div>
+          <div class="mm-feedback" id="mm-feedback"></div>
+          <div class="mm-choices" id="mm-choices"></div>
+          <p class="mm-hint">Pense aux vrais métiers — l'intervenant approfondira avec toi ensuite !</p>
+        </div>
+        <div class="result-container-full hidden" id="result">
+          <div class="result-box" id="result-box">
+            <div class="result-icon" id="result-icon"></div>
+            <h3 id="result-title"></h3><p id="result-text"></p>
+            <p class="result-score" id="result-score"></p>
+            <a href="coffre.html" class="btn-primary btn-gold">🏆 VOIR LE COFFRE-FORT</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="js/loader.js"></script><script src="js/gameState.js"></script><script src="js/globalTimer.js"></script><script src="js/enigme.js"></script><script src="js/music.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
