@@ -12,127 +12,158 @@ document.addEventListener('DOMContentLoaded', function() {
   var btnVrai = document.getElementById('btn-vrai');
   var btnFaux = document.getElementById('btn-faux');
 
+  // 1. BYPASS
   if (state.enigme1 && state.enigme1.completed !== null) {
     if (gameArea) gameArea.classList.add('hidden');
     showResult(state.enigme1.completed, 0);
     return;
   }
 
-  var allStatements = [
-    { text: "L'esthéticienne peut réaliser des soins du visage et des épilations.", answer: true },
-    { text: "Le fleuriste travaille uniquement avec des fleurs artificielles.", answer: false },
-    { text: "Le CAP Esthétique est le diplôme minimum pour exercer en salon.", answer: true },
-    { text: "Un fleuriste doit connaître les saisons de floraison des plantes.", answer: true },
-    { text: "La prothésiste ongulaire peut prescrire des médicaments pour les ongles.", answer: false },
-    { text: "Le fleuriste événementiel crée des compositions pour les mariages et galas.", answer: true },
-    { text: "En esthétique, il est interdit d'utiliser des produits cosmétiques bio.", answer: false },
-    { text: "Le coiffeur peut aussi proposer des colorations et des permanentes.", answer: true },
-    { text: "Le fleuriste n'a pas besoin de savoir gérer un stock de fleurs.", answer: false },
-    { text: "Une esthéticienne peut se spécialiser en maquillage professionnel.", answer: true },
-    { text: "Les fleuristes travaillent souvent debout et portent des charges lourdes.", answer: true },
-    { text: "Un spa praticien ne fait que des massages relaxants.", answer: false },
-    { text: "Le fleuriste funéraire réalise des gerbes et couronnes pour les deuils.", answer: true },
-    { text: "L'esthéticienne n'a pas le droit de travailler à domicile.", answer: false },
-    { text: "Un conseiller en image aide ses clients à trouver leur style.", answer: true },
-    { text: "Les horaires en salon d'esthétique sont toujours de 9h à 17h.", answer: false }
-  ];
+  // 2. CACHER LE JEU AU DÉMARRAGE
+  if (gameArea) gameArea.classList.add('hidden');
 
-  function shuffle(arr) {
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = a[i]; a[i] = a[j]; a[j] = t;
+  // 3. AFFICHER LE TUTORIEL
+  Tutorial.show({
+    icon: '💄',
+    title: 'VRAI OU FAUX ?',
+    subtitle: 'ÉPREUVE 1',
+    description: 'Teste tes connaissances sur les métiers de la beauté, du soin et des fleurs.',
+    steps: [
+      { icon: '📖', text: 'Lis l\'affirmation qui apparaît sur la carte.' },
+      { icon: '⏱️', text: 'Réponds vite par <strong>VRAI</strong> ou <strong>FAUX</strong>. Attention au chrono !' },
+      { icon: '🎯', text: 'Obtiens au moins 3 bonnes réponses sur 5 pour réussir.' }
+    ],
+    warning: 'Tu n\'as que 7 secondes par question !',
+    buttonText: 'C\'EST PARTI !',
+    theme: 'purple'
+  }).then(function() {
+    if (window.globalTimer) globalTimer.start();
+    if (gameArea) gameArea.classList.remove('hidden');
+    initGame();
+  });
+
+  // 4. FONCTION GLOBALE DU JEU
+  function initGame() {
+    var allStatements = [
+      { text: "L'esthéticienne peut réaliser des soins du visage et des épilations.", answer: true },
+      { text: "Le fleuriste travaille uniquement avec des fleurs artificielles.", answer: false },
+      { text: "Le CAP Esthétique est le diplôme minimum pour exercer en salon.", answer: true },
+      { text: "Un fleuriste doit connaître les saisons de floraison des plantes.", answer: true },
+      { text: "La prothésiste ongulaire peut prescrire des médicaments pour les ongles.", answer: false },
+      { text: "Le fleuriste événementiel crée des compositions pour les mariages et galas.", answer: true },
+      { text: "En esthétique, il est interdit d'utiliser des produits cosmétiques bio.", answer: false },
+      { text: "Le coiffeur peut aussi proposer des colorations et des permanentes.", answer: true },
+      { text: "Le fleuriste n'a pas besoin de savoir gérer un stock de fleurs.", answer: false },
+      { text: "Une esthéticienne peut se spécialiser en maquillage professionnel.", answer: true },
+      { text: "Les fleuristes travaillent souvent debout et portent des charges lourdes.", answer: true },
+      { text: "Un spa praticien ne fait que des massages relaxants.", answer: false },
+      { text: "Le fleuriste funéraire réalise des gerbes et couronnes pour les deuils.", answer: true },
+      { text: "L'esthéticienne n'a pas le droit de travailler à domicile.", answer: false },
+      { text: "Un conseiller en image aide ses clients à trouver leur style.", answer: true },
+      { text: "Les horaires en salon d'esthétique sont toujours de 9h à 17h.", answer: false }
+    ];
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
     }
-    return a;
-  }
 
-  var statements = shuffle(allStatements).slice(0, 5);
-  var QUESTION_TIME = 7000;
-  var current = 0;
-  var correctCount = 0;
-  var wrongCount = 0;
-  var answered = false;
-  var questionTimer = null;
+    var statements = shuffle(allStatements).slice(0, 5);
+    var QUESTION_TIME = 7000;
+    var current = 0;
+    var correctCount = 0;
+    var wrongCount = 0;
+    var answered = false;
+    var questionTimer = null;
 
-  function updateStats() {
-    if (roundEl) roundEl.textContent = '❓ ' + (current + 1) + ' / ' + statements.length;
-    if (correctEl) correctEl.textContent = '✅ ' + correctCount;
-    if (wrongEl) wrongEl.textContent = '❌ ' + wrongCount;
-  }
+    function updateStats() {
+      if (roundEl) roundEl.textContent = '❓ ' + (current + 1) + ' / ' + statements.length;
+      if (correctEl) correctEl.textContent = '✅ ' + correctCount;
+      if (wrongEl) wrongEl.textContent = '❌ ' + wrongCount;
+    }
 
-  function startQuestion() {
-    if (current >= statements.length) { endGame(); return; }
-    answered = false;
-    updateStats();
-    if (feedbackEl) { feedbackEl.textContent = ''; feedbackEl.className = 'vf-feedback'; }
-    card.classList.remove('flash-correct', 'flash-wrong');
-    btnVrai.classList.remove('disabled');
-    btnFaux.classList.remove('disabled');
+    function startQuestion() {
+      if (current >= statements.length) { endGame(); return; }
+      answered = false;
+      updateStats();
+      if (feedbackEl) { feedbackEl.textContent = ''; feedbackEl.className = 'vf-feedback'; }
+      card.classList.remove('flash-correct', 'flash-wrong');
+      btnVrai.classList.remove('disabled');
+      btnFaux.classList.remove('disabled');
 
-    statementEl.textContent = statements[current].text;
-    if (timerFill) { timerFill.style.width = '100%'; timerFill.classList.remove('danger'); }
+      statementEl.textContent = statements[current].text;
+      if (timerFill) { timerFill.style.width = '100%'; timerFill.classList.remove('danger'); }
 
-    var start = Date.now();
-    questionTimer = setInterval(function() {
-      var elapsed = Date.now() - start;
-      var pct = Math.max(0, 100 - (elapsed / QUESTION_TIME * 100));
-      if (timerFill) {
-        timerFill.style.width = pct + '%';
-        if (pct < 30) timerFill.classList.add('danger');
+      var start = Date.now();
+      questionTimer = setInterval(function() {
+        var elapsed = Date.now() - start;
+        var pct = Math.max(0, 100 - (elapsed / QUESTION_TIME * 100));
+        if (timerFill) {
+          timerFill.style.width = pct + '%';
+          if (pct < 30) timerFill.classList.add('danger');
+        }
+        if (elapsed >= QUESTION_TIME) {
+          clearInterval(questionTimer);
+          if (!answered) handleTimeout();
+        }
+      }, 50);
+    }
+
+    function handleAnswer(playerAnswer) {
+      if (answered) return;
+      answered = true;
+      clearInterval(questionTimer);
+      btnVrai.classList.add('disabled');
+      btnFaux.classList.add('disabled');
+
+      var correct = statements[current].answer === playerAnswer;
+      if (correct) {
+        correctCount++;
+        card.classList.add('flash-correct');
+        if (feedbackEl) { feedbackEl.textContent = '✅ Bonne réponse !'; feedbackEl.className = 'vf-feedback correct'; }
+      } else {
+        wrongCount++;
+        card.classList.add('flash-wrong');
+        if (navigator.vibrate) navigator.vibrate([50]); 
+        var bonneReponse = statements[current].answer ? 'VRAI' : 'FAUX';
+        if (feedbackEl) { feedbackEl.textContent = '❌ Raté ! C\'était ' + bonneReponse; feedbackEl.className = 'vf-feedback wrong'; }
       }
-      if (elapsed >= QUESTION_TIME) {
-        clearInterval(questionTimer);
-        if (!answered) handleTimeout();
-      }
-    }, 50);
-  }
+      updateStats();
+      setTimeout(function() { current++; startQuestion(); }, 1200);
+    }
 
-  function handleAnswer(playerAnswer) {
-    if (answered) return;
-    answered = true;
-    clearInterval(questionTimer);
-    btnVrai.classList.add('disabled');
-    btnFaux.classList.add('disabled');
-
-    var correct = statements[current].answer === playerAnswer;
-    if (correct) {
-      correctCount++;
-      card.classList.add('flash-correct');
-      if (feedbackEl) { feedbackEl.textContent = '✅ Bonne réponse !'; feedbackEl.className = 'vf-feedback correct'; }
-    } else {
+    function handleTimeout() {
+      answered = true;
       wrongCount++;
+      btnVrai.classList.add('disabled');
+      btnFaux.classList.add('disabled');
       card.classList.add('flash-wrong');
-      if (navigator.vibrate) navigator.vibrate([50]); // Vibration d'erreur
+      if (navigator.vibrate) navigator.vibrate([50, 50, 50]); 
       var bonneReponse = statements[current].answer ? 'VRAI' : 'FAUX';
-      if (feedbackEl) { feedbackEl.textContent = '❌ Raté ! C\'était ' + bonneReponse; feedbackEl.className = 'vf-feedback wrong'; }
+      if (feedbackEl) { feedbackEl.textContent = '⏰ Temps écoulé ! C\'était ' + bonneReponse; feedbackEl.className = 'vf-feedback wrong'; }
+      updateStats();
+      setTimeout(function() { current++; startQuestion(); }, 1200);
     }
+
+    btnVrai.addEventListener('click', function() { handleAnswer(true); });
+    btnFaux.addEventListener('click', function() { handleAnswer(false); });
+
+    function endGame() {
+      var success = correctCount >= 3;
+      state.enigme1 = { completed: success };
+      saveGameState(state);
+      setTimeout(function() { if (gameArea) gameArea.classList.add('hidden'); showResult(success, correctCount); }, 300);
+    }
+
     updateStats();
-    setTimeout(function() { current++; startQuestion(); }, 1200);
+    setTimeout(function() { startQuestion(); }, 800);
   }
 
-  function handleTimeout() {
-    answered = true;
-    wrongCount++;
-    btnVrai.classList.add('disabled');
-    btnFaux.classList.add('disabled');
-    card.classList.add('flash-wrong');
-    if (navigator.vibrate) navigator.vibrate([50, 50, 50]); // Vibration timeout
-    var bonneReponse = statements[current].answer ? 'VRAI' : 'FAUX';
-    if (feedbackEl) { feedbackEl.textContent = '⏰ Temps écoulé ! C\'était ' + bonneReponse; feedbackEl.className = 'vf-feedback wrong'; }
-    updateStats();
-    setTimeout(function() { current++; startQuestion(); }, 1200);
-  }
-
-  btnVrai.addEventListener('click', function() { handleAnswer(true); });
-  btnFaux.addEventListener('click', function() { handleAnswer(false); });
-
-  function endGame() {
-    var success = correctCount >= 3;
-    state.enigme1 = { completed: success };
-    saveGameState(state);
-    setTimeout(function() { if (gameArea) gameArea.classList.add('hidden'); showResult(success, correctCount); }, 300);
-  }
-
+  // 5. FONCTION SHOWRESULT HORS DE INITGAME
   function showResult(success, score) {
     if (resultDiv) resultDiv.classList.remove('hidden');
     if (gameArea) gameArea.classList.add('hidden');
@@ -146,16 +177,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (success) {
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
-      if (window.confetti) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#ff007f', '#00d4ff'] }); // Confettis !
+      if (window.confetti) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#ff007f', '#00d4ff'] }); 
       if (resultBox) resultBox.classList.add('success'); 
       if (resultIcon) resultIcon.textContent = '✓';
       if (resultTitle) resultTitle.textContent = 'MIRANDA IMPRESSIONNÉE !';
       if (resultText) resultText.textContent = 'Tu connais bien les métiers. L\'intervenant pourra approfondir avec toi ! Accessoire débloqué !';
     } else {
-      if (navigator.vibrate) navigator.vibrate([50, 100, 50, 100, 50]); // Vibration échec lourd
+      if (navigator.vibrate) navigator.vibrate([50, 100, 50, 100, 50]); 
       if (resultBox) { 
         resultBox.classList.remove('fail-effect'); 
-        void resultBox.offsetWidth; // Force le reflow CSS
+        void resultBox.offsetWidth; 
         resultBox.classList.add('fail-effect', 'fail'); 
       }
       if (resultIcon) resultIcon.textContent = '✗';
@@ -163,7 +194,4 @@ document.addEventListener('DOMContentLoaded', function() {
       if (resultText) resultText.textContent = 'Il fallait au moins 3 bonnes réponses. Pose tes questions à l\'intervenant ! Accessoire verrouillé.';
     }
   }
-
-  updateStats();
-  setTimeout(function() { startQuestion(); }, 800);
 });
