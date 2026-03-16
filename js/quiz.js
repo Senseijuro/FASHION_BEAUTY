@@ -117,6 +117,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderBoard() {
       gridEl.innerHTML = '';
+      // --- ANTI-STICKY HOVER JS ---
+      gridEl.style.pointerEvents = 'none';
+      setTimeout(function() { gridEl.style.pointerEvents = 'auto'; }, 150);
+      // -----------------------------
       board.forEach(function(emoji, idx) {
         var el = document.createElement('div');
         el.className = 'pz-cell';

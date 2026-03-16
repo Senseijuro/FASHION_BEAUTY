@@ -96,6 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
       var shuffledChoices = shuffle(q.choices);
       choicesEl.innerHTML = '';
+      // --- ANTI-STICKY HOVER JS ---
+      choicesEl.style.pointerEvents = 'none';
+      setTimeout(function() { choicesEl.style.pointerEvents = 'auto'; }, 150);
+      // -----------------------------
       shuffledChoices.forEach(function(choice) {
         var btn = document.createElement('div');
         btn.className = 'mm-choice';

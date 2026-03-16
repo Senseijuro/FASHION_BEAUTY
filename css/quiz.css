@@ -29,10 +29,17 @@
   background: var(--bg-card); border: 2px solid var(--border);
   transition: all 0.15s; user-select: none;
 }
-.pz-cell:hover { border-color: var(--pink); transform: scale(1.05); }
+/* ANTI-STICKY HOVER */
+@media (hover: hover) and (pointer: fine) {
+  .pz-cell:hover { border-color: var(--pink); transform: scale(1.05); }
+  .pz-cell.empty:hover { border-color: rgba(255,255,255,0.1); transform: none; }
+}
+@media (hover: none) {
+  .pz-cell:hover { border-color: var(--border) !important; transform: none !important; }
+  .pz-cell.empty:hover { border-color: rgba(255,255,255,0.1) !important; transform: none !important; }
+}
 .pz-cell:active { transform: scale(0.95); }
 .pz-cell.empty { background: rgba(0,0,0,0.4); border: 2px dashed rgba(255,255,255,0.1); cursor: default; }
-.pz-cell.empty:hover { border-color: rgba(255,255,255,0.1); transform: none; }
 .pz-cell.correct { border-color: var(--green); background: rgba(0,255,136,0.08); }
 .pz-cell.solved { pointer-events: none; border-color: var(--green); background: rgba(0,255,136,0.15); animation: pz-pop 0.4s ease; }
 @keyframes pz-pop { 0%{transform:scale(1)} 50%{transform:scale(1.1)} 100%{transform:scale(1)} }

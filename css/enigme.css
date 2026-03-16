@@ -29,7 +29,13 @@
   background: var(--bg-card); color: var(--white); font-size: 0.9rem; font-weight: 600;
   cursor: pointer; transition: all 0.2s; text-align: center;
 }
-.mm-choice:hover { border-color: var(--purple); background: rgba(168,85,247,0.1); transform: scale(1.03); }
+/* ANTI-STICKY HOVER */
+@media (hover: hover) and (pointer: fine) {
+  .mm-choice:hover { border-color: var(--purple); background: rgba(168,85,247,0.1); transform: scale(1.03); }
+}
+@media (hover: none) {
+  .mm-choice:hover { border-color: var(--border) !important; background: var(--bg-card) !important; transform: none !important; }
+}
 .mm-choice:active { transform: scale(0.97); }
 .mm-choice.selected-correct { border-color: var(--green); background: rgba(0,255,136,0.15); pointer-events: none; }
 .mm-choice.selected-wrong { border-color: var(--red); background: rgba(255,68,68,0.15); pointer-events: none; }
